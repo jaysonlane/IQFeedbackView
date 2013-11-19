@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define IOS_7_OR_GREATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f)
+
 typedef void(^IQFeedbackCompletion)(BOOL isCancel, NSString* message, UIImage* image);
 
 @interface IQFeedbackView : UIView
