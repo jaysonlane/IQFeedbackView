@@ -10,7 +10,9 @@
 #import "DALinedTextView.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface IQFeedbackView ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+#import "UIImage+ImageEffects.h"
+
+@interface IQFeedbackView ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 
 @end
@@ -24,7 +26,8 @@
 	UIView *backgroundView;
 	
 	UINavigationBar *navigationBar;
-	DALinedTextView *textViewFeedback;
+	id textViewFeedback;
+    
 	
 	UIButton *buttonImageAttached;
     
@@ -45,8 +48,9 @@
 		
 		if ([doneButtonTitle length])
 		{
-			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:doneButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonClicked:)];
-            [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+			UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:doneButtonTitle style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonClicked:)];
+            if(!IOS_7_OR_GREATER)
+                [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                           [UIFont boldSystemFontOfSize:0],UITextAttributeFont,
                                           [UIColor darkGrayColor],UITextAttributeTextColor,
                                           [UIColor blackColor],UITextAttributeTextShadowColor,
@@ -60,7 +64,8 @@
 		if ([cancelButtonTitle length])
 		{
 			UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:cancelButtonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(cancelButtonClicked:)];
-            [cancelButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+            if(!IOS_7_OR_GREATER)
+                [cancelButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                 [UIFont boldSystemFontOfSize:0],UITextAttributeFont,
                                                 [UIColor darkGrayColor],UITextAttributeTextColor,
                                                 [UIColor blackColor],UITextAttributeTextShadowColor,
@@ -83,30 +88,47 @@
     if (self) {
 		[self setFrame:CGRectMake(10, -204, 300, 204)];
 		[self setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleTopMargin)];
-		[self setBackgroundColor:[UIColor whiteColor]];
 		[self.layer setCornerRadius:7.0];
 		[self setClipsToBounds:YES];
+        
+        defaultImage = [UIImage imageNamed:@"addImage"];
+		
+		navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44)];
+        
+        if(IOS_7_OR_GREATER){
+            UIImageView *blurredBackgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
+            blurredBackgroundView.image = [self blurredSnapshot];
+            [self addSubview: blurredBackgroundView];
+        }
+        else{
+            [self setBackgroundColor:[UIColor whiteColor]];
+            
+            [navigationBar setTintColor:[UIColor whiteColor]];
+            [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                   [UIFont boldSystemFontOfSize:0],UITextAttributeFont,
+                                                   [UIColor darkGrayColor],UITextAttributeTextColor,
+                                                   [UIColor blackColor],UITextAttributeTextShadowColor,
+                                                   [NSValue valueWithUIOffset:UIOffsetMake(-1, -2)],UITextAttributeTextShadowOffset,
+                                                   nil]];
+        }
 		
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)     keyboardHeight = 216;
         else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)  keyboardHeight = 264;
-        
-
-        
-		defaultImage = [UIImage imageNamed:@"addImage"];
-		
-		navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44)];
-        [navigationBar setTintColor:[UIColor whiteColor]];
-        [navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                               [UIFont boldSystemFontOfSize:0],UITextAttributeFont,
-                                               [UIColor darkGrayColor],UITextAttributeTextColor,
-                                               [UIColor blackColor],UITextAttributeTextShadowColor,
-                                               [NSValue valueWithUIOffset:UIOffsetMake(-1, -2)],UITextAttributeTextShadowOffset,
-                                               nil]];
+    
 
 		[navigationBar setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
 		[self addSubview:navigationBar];
 
-		textViewFeedback = [[DALinedTextView alloc] initWithFrame:CGRectMake(5, 49, 205, 150)];
+        
+        if(!IOS_7_OR_GREATER){
+            textViewFeedback = [[DALinedTextView alloc] initWithFrame:CGRectMake(5, 49, 205, 150)];
+            
+        }
+        else{
+            textViewFeedback = [[UITextView alloc] initWithFrame:CGRectMake(5, 49, 205, 150)];
+            ((UITextView *)textViewFeedback).backgroundColor = [UIColor clearColor];
+        }
+        
 		[textViewFeedback setDataDetectorTypes:(UIDataDetectorTypePhoneNumber|UIDataDetectorTypeLink)];
 		[textViewFeedback setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight)];
 		[textViewFeedback setAutocorrectionType:UITextAutocorrectionTypeNo];
@@ -159,7 +181,7 @@
 
 -(NSString *)message
 {
-	return textViewFeedback.text;
+	return ((UITextView *)textViewFeedback).text;
 }
 
 -(void)setImage:(UIImage *)image
@@ -185,8 +207,8 @@
 -(void)setCanAddImage:(BOOL)canAddImage
 {
 	_canAddImage = canAddImage;
-	
-	CGRect textFrame = textViewFeedback.frame;
+    
+	CGRect textFrame = ((UITextView *) textViewFeedback).frame;
 	
 	if (_canAddImage == YES)
 	{
@@ -204,7 +226,8 @@
 {
 	_canEditText = canEditText;
 	
-	[textViewFeedback setEditable:_canEditText];
+    //if(!IOS_7_OR_GREATER)
+        [textViewFeedback setEditable:_canEditText];
 }
 
 
@@ -249,13 +272,15 @@
 
 -(void)show
 {
+    CGFloat offset = (IOS_7_OR_GREATER)? 0 : 20;
+    
 	if (_canEditText)
 	{
- 		[self setCenter:CGPointMake(CGRectGetMidX(self.superview.bounds), CGRectGetMidY(self.superview.bounds)-20-keyboardHeight/2)];
+ 		[self setCenter:CGPointMake(CGRectGetMidX(self.superview.bounds), CGRectGetMidY(self.superview.bounds)-offset-keyboardHeight/2)];
 	}
 	else
 	{
-		[self setCenter:CGPointMake(CGRectGetMidX(self.superview.bounds), CGRectGetMidY(self.superview.bounds)-20)];
+		[self setCenter:CGPointMake(CGRectGetMidX(self.superview.bounds), CGRectGetMidY(self.superview.bounds)-offset)];
 	}
 }
 
@@ -289,5 +314,32 @@
 		[backgroundView removeFromSuperview];
 	}];
 }
+
+
+//This function courtesy of: http://damir.me/posts/ios7-blurring-techniques
+-(UIImage *)blurredSnapshot
+{
+    // Create the image context
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, self.window.screen.scale);
+    
+    // There he is! The new API method
+    [self drawViewHierarchyInRect:self.frame afterScreenUpdates:YES];
+    
+    // Get the snapshot
+    UIImage *snapshotImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // Now apply the blur effect using Apple's UIImageEffect category
+    UIImage *blurredSnapshotImage = [snapshotImage applyExtraLightEffect];
+    
+    // Or apply any other effects available in "UIImage+ImageEffects.h"
+    // UIImage *blurredSnapshotImage = [snapshotImage applyDarkEffect];
+    // UIImage *blurredSnapshotImage = [snapshotImage applyExtraLightEffect];
+    
+    // Be nice and clean your mess up
+    UIGraphicsEndImageContext();
+    
+    return blurredSnapshotImage;
+}
+
 
 @end

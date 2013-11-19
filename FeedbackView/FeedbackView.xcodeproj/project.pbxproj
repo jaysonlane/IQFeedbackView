@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE2A9E6D1839D87300E98CF5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2A9E6C1839D87300E98CF5 /* Accelerate.framework */; };
+		AE2A9E701839D8C100E98CF5 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2A9E6F1839D8C100E98CF5 /* UIImage+ImageEffects.m */; };
 		E625BCC818295A0800C45EEF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E625BCC718295A0800C45EEF /* UIKit.framework */; };
 		E625BCCA18295A0800C45EEF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E625BCC918295A0800C45EEF /* Foundation.framework */; };
 		E625BCCC18295A0800C45EEF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E625BCCB18295A0800C45EEF /* CoreGraphics.framework */; };
@@ -24,6 +26,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AE2A9E6C1839D87300E98CF5 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		AE2A9E6E1839D8C100E98CF5 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		AE2A9E6F1839D8C100E98CF5 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		E625BCC318295A0800C45EEF /* FeedbackView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedbackView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E625BCC718295A0800C45EEF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E625BCC918295A0800C45EEF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -52,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE2A9E6D1839D87300E98CF5 /* Accelerate.framework in Frameworks */,
 				E625BCC818295A0800C45EEF /* UIKit.framework in Frameworks */,
 				E625BCCA18295A0800C45EEF /* Foundation.framework in Frameworks */,
 				E625BCCC18295A0800C45EEF /* CoreGraphics.framework in Frameworks */,
@@ -83,6 +89,7 @@
 		E625BCC618295A0800C45EEF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE2A9E6C1839D87300E98CF5 /* Accelerate.framework */,
 				E625BCC718295A0800C45EEF /* UIKit.framework */,
 				E625BCC918295A0800C45EEF /* Foundation.framework */,
 				E625BCCB18295A0800C45EEF /* CoreGraphics.framework */,
@@ -120,6 +127,8 @@
 		E625BCED18295A4C00C45EEF /* IQFeedbackView */ = {
 			isa = PBXGroup;
 			children = (
+				AE2A9E6E1839D8C100E98CF5 /* UIImage+ImageEffects.h */,
+				AE2A9E6F1839D8C100E98CF5 /* UIImage+ImageEffects.m */,
 				E625BCEE18295A4C00C45EEF /* IQFeedbackView.h */,
 				E625BCEF18295A4C00C45EEF /* IQFeedbackView.m */,
 				E625BCF918295FD200C45EEF /* addImage.png */,
@@ -205,6 +214,7 @@
 			files = (
 				E625BCD418295A0800C45EEF /* main.m in Sources */,
 				E625BCD818295A0800C45EEF /* AppDelegate.m in Sources */,
+				AE2A9E701839D8C100E98CF5 /* UIImage+ImageEffects.m in Sources */,
 				E625BCE118295A0800C45EEF /* ViewController.m in Sources */,
 				E625BCF018295A4C00C45EEF /* IQFeedbackView.m in Sources */,
 				E625BCF818295DA300C45EEF /* DALinedTextView.m in Sources */,
@@ -325,6 +335,7 @@
 				E625BCEC18295A0900C45EEF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
