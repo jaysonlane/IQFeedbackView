@@ -96,7 +96,7 @@
 		navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44)];
         
         if(IOS_7_OR_GREATER){
-            UIImageView *blurredBackgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
+            UIImageView *blurredBackgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, [[UIScreen mainScreen] bounds].size.height)];
             blurredBackgroundView.image = [self blurredSnapshot];
             [self addSubview: blurredBackgroundView];
         }
