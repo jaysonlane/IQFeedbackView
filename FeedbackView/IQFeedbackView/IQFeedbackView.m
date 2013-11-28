@@ -99,6 +99,19 @@
             UIImageView *blurredBackgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, [[UIScreen mainScreen] bounds].size.height)];
             blurredBackgroundView.image = [self blurredSnapshot];
             [self addSubview: blurredBackgroundView];
+            
+            
+            UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+            interpolationHorizontal.minimumRelativeValue = @-7.0;
+            interpolationHorizontal.maximumRelativeValue = @7.0;
+            
+            UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc]initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+            interpolationVertical.minimumRelativeValue = @-7.0;
+            interpolationVertical.maximumRelativeValue = @7.0;
+            
+            [self addMotionEffect:interpolationHorizontal];
+            [self addMotionEffect:interpolationVertical];
+            
         }
         else{
             [self setBackgroundColor:[UIColor whiteColor]];
